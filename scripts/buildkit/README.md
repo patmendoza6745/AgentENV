@@ -27,8 +27,8 @@ directory when a check fails.
 - Failed solves, cancellation, deadlines, terminal API status, and subsequent
   cache reuse. Node counts must return to their initial values, and only one ready
   read-only cache seed may remain after workers and retired volumes are released.
-- Worker isolation, authentication, startup overrides, numeric users, external
-  Dockerfiles, secret mounts, and terminal/nonterminal progress.
+- Worker isolation, authentication, startup overrides, numeric users, an image's
+  `/run` entries, external Dockerfiles, secret mounts, and terminal/nonterminal progress.
 
 The numeric-user cases also run alone with `make test-buildkit-users`. To run one
 other case, invoke the Python test directly with the built CLI:

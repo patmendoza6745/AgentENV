@@ -454,6 +454,20 @@ class BuildKitTests(unittest.TestCase):
                     self.assertEqual(self.cli("exec", sandbox, "id", "-g"), gid)
         self.assert_released()
 
+    def test_image_run_directory(self):
+        context = self.work / "run-directory"
+        context.mkdir()
+        (context / "Dockerfile").write_text(
+            "FROM alpine:3.22\nRUN mkdir -m 3777 /run/probe && chown 65534:65534 /run/probe\n"
+            'CMD ["sleep", "infinity"]\n'
+        )
+        build = self.build("run-directory", context=context)
+        with self.sandbox(build) as sandbox:
+            self.assertEqual(
+                self.cli("exec", sandbox, "stat", "-c", "%a %u:%g", "/run/probe"),
+                "3777 65534:65534",
+            )
+
     def test_external_dockerfile_and_secret(self):
         secret = self.work / "secret"
         secret.write_text("buildkit-test-secret\n")
